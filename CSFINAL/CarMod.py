@@ -58,7 +58,7 @@ class car():
 		counter = 0
 		print("Final Gearing:")
 		while(counter < len(self.G)-1):
-			calculation = float(self.G[counter]) * float(self.G[-1])
+			calculation = round(float(self.G[counter]) * float(self.G[-1]), 3)
 			self.FinalGearing.append(calculation)
 			print(counter + 1, ":", calculation)
 			counter += 1
@@ -96,6 +96,7 @@ class car():
 
 
 		#Calculating the acceleration curve
+	def calculateacceleration(self):
 		counter = 1
 		print("Acceleration Curve")
 		for gear in self.FinalGearing:
@@ -103,24 +104,16 @@ class car():
 			for tq in self.TQ: 
 				calculation = [counter, int(tq[0]), round(10 * (int(tq[1])*gear)/(self.Mass * self.Wheels[0]/2), 2)]
 				self.Accelerationgraph.append(calculation)
-				print(calculation)
+				if(calculation[-1] > float(self.I[6])):
+					print(calculation, "Traction Loss")
+				else:
+					print(calculation)
 			counter += 1 
 			print()
 
-	def corneringefficiency(self, radius): #I don't think this works quite right
-		print(f"Speed needed to achieve {self.Wheels[1]} g's in a {radius} meter radius turn:")
-		print(round(math.sqrt(self.Wheels[1] * radius * 9.8), 2), 'kph', '\n')
-		if(self.Wheels[1] <= 0.8):
-			print("This car cannot go around turns very fast.", '\n')
-		elif((self.Wheels[1] <= 1) and (self.Wheels[1] > 0.8)):
-			print("This car can handle decently well!", '\n')
-		else:
-			print("This car can handle exceptionally well and is very controllable!", '\n')
-
-
 #Actual program:
 Car1 = car("Koenigsegg")
-Car1.corneringefficiency(50)
+Car1.calculateacceleration()
 
 
 # Graphing each gear differently
